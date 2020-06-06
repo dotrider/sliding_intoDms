@@ -4,7 +4,7 @@ const Join = () => {
 
     return(
         <div>
-
+            JOIN
         </div>
     )
 }
