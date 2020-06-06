@@ -3,7 +3,7 @@ const user = [];
 
 module.exports = {
 
-    addUser = ({id, name, room}) => {
+    addUser: ({id, name, room}) => {
         
         name = name.trim().toLowerCase();
         room = room.trim().toLowerCase();
@@ -18,7 +18,7 @@ module.exports = {
         user.push(newUser);
     },
 
-    removeUser = (id) => {
+    removeUser: (id) => {
         const index = user.findIndex(user => user.id === id);
         
         if(index !== -1){
@@ -27,9 +27,9 @@ module.exports = {
 
     },
 
-    getUser = (id) => user.find(user => user.id === id),
+    getUser: (id) => user.find(user => user.id === id),
 
-    getUsersInRoom = (room) => {
+    getUsersInRoom: (room) => {
        return user.filter(user => user.room === room)
     }
 };
