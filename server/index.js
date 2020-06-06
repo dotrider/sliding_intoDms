@@ -6,8 +6,8 @@ const express = require('express'),
     server = http.createServer(app),
     io = sockets(server);
 
-
-    io.on('conneection', (socket) => {
+    //connection set 
+    io.on('connection', (socket) => {
         console.log('a user connected!!!!!');
         socket.on('disconnect', () => {
             console.log('connection disconnected');
@@ -19,3 +19,4 @@ const express = require('express'),
     });
 
 server.listen(PORT_NUM, () => console.log(`spinning hardcore on port ${PORT_NUM}`));
+
