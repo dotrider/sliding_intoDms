@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 
 const Join = (props) => {
+
     const [name, setName] = useState(''),
     [room, setRoom] = useState('');
 
-    console.log(props)
+    // console.log(props)
 
     return(
         <div>
@@ -16,7 +17,7 @@ const Join = (props) => {
             <div>
                 <input placeholder='Enter Room' type='text' onChange={(e) => setRoom(e.target.value)}/>
             </div>
-            <button onClick={ e => (!name || !room)? e.preventDefault() : props.history.push(`/messages?name=${name}$room=${room}`)}>Sign in</button>
+            <button onClick={ e => (!name || !room)? e.preventDefault() : props.history.push(`/messages?name=${name}&room=${room}`)}>Sign in</button>
         </div>
     )
 }

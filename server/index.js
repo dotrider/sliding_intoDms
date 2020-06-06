@@ -9,6 +9,13 @@ const express = require('express'),
     //connection set 
     io.on('connection', (socket) => {
         console.log('a user connected!!!!!');
+        //JOIN (receiving data from client)
+        socket.on('join', ({name, room}, cb ) => {
+            console.log(name,room)
+            // cb();
+        })
+
+        ////DISCONNECT
         socket.on('disconnect', () => {
             console.log('connection disconnected');
         });
