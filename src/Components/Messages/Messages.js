@@ -12,7 +12,7 @@ const Messages = (props) => {
     [messages, setMessages] = useState([]),
     [message, setMessage] = useState('');
     // console.log('messages', props.location.search)
-    
+    //Handling users join
     useEffect(() => {
         const {name, room} = queryString.parse(props.location.search);
         // console.log('useEffect', name, room)
@@ -22,8 +22,10 @@ const Messages = (props) => {
         setName(name);
         setRoom(room);
         // console.log('socket', socket)
-        /*---Sending to server----*/
-        socket.emit('join', {name, room});
+        /*---emit/Sending to server (event='join')(payload={name,room})----*/
+        socket.emit('join', {name, room}, () => {
+
+        });
         //willUnmount
         return () => {
             socket.emit('disconnect');
@@ -32,18 +34,35 @@ const Messages = (props) => {
     },['localhost:4040', props.location.search]);
 
 
-    //Messages
+    //Handling Messages
     useEffect(() => {
+        //listening for changes/messages
         socket.on('message', (message) => {
-            setMessage([...messages, message])
+            setMessages([...messages, message])
         })
-    },[messages])
+    },[messages]);
+
+
+    const sendMessage = (e) => {
+        e.preventDefault();
+        if(message){
+            socket.emit('sendMessage', message, () => {
+                setMessage('')
+            })}
+    }
+
+    console.log('messages', messages)
 
     return(
         <div>
-            Messages
+            <div>
+                <input value={message} onChange={e => setMessage(e.target.value)}
+                onKeyPress={event => event.key === 'Enter'? setMessage(event): null}
+                />
+                
+            </div>
         </div>
     )
 }
 
-export default Messages;
+export default Messages; 

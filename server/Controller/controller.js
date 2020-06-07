@@ -1,5 +1,5 @@
 
-const user = [];
+const users = [];
 
 module.exports = {
 
@@ -8,29 +8,30 @@ module.exports = {
         name = name.trim().toLowerCase();
         room = room.trim().toLowerCase();
         //Check if user with room already exist
-        const existingUser = user.find(user => user.room === room && user.name === name);
+        const existingUser = users.find(user => user.room === room && user.name === name);
 
         if(existingUser){
             return {err: 'Username already exist'}
         };
 
-        const newUser = {id, name, room}
-        user.push(newUser);
+        const user = {id, name, room}
+        users.push(user)
+        return { user }
     },
 
     removeUser: (id) => {
-        const index = user.findIndex(user => user.id === id);
+        const index = users.findIndex(user => user.id === id);
         
         if(index !== -1){
-            return user.splice(index,1)
+            return users.splice(index,1)
         }
 
     },
 
-    getUser: (id) => user.find(user => user.id === id),
+    getUser: (id) => users.find(user => user.id === id),
 
     getUsersInRoom: (room) => {
-       return user.filter(user => user.room === room)
+       return users.filter(user => user.room === room)
     }
 };
 

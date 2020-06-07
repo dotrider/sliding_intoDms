@@ -1,31 +1,34 @@
 const express = require('express'),
-    sockets = require('socket.io'),
+    socket = require('socket.io'),
     http = require('http'),
     PORT_NUM = process.env.PORT_NUM || 4040,
     app = express(),
     server = http.createServer(app),
-    io = sockets(server),
+    io = socket(server),
     {addUser, removeUser, getUser, getUsersInRoom} = require('../server/Controller/controller');
 
     //connection set 
     io.on('connection', (socket) => {
         // console.log('a user connected!!!!!'); 
-        //JOIN (receiving data from client)
+        /*(receiving data using same event='join' payload={name,room} from client)
+        passing cb to error handling*/
         socket.on('join', ({name, room}, cb ) => {
-            // console.log(name,room)
-            const { user, err } = addUser({ id: socket.id, name, room});
+            console.log(name,room)
+            const { err, user } = addUser({ id: socket.id, name, room});
             if(err) return cb(err)
-            // cb();
+      
             socket.join(user.room);
-            //Welcomes user
+            //Welcomes user with message - {'message'} sending payload with user/text to client handling-messages useEffect
             socket.emit('message', {user: 'admin', text: `Hello ${user.name}, welcome to room ${user.room}`});
             //broadcast sends message to everyone besides especific user that user has joinned
             socket.broadcast
-            .to(user.room).emit('message', {user: 'admin', text: `${user.name}, has join`})
-            cb()
+            .to(user.room).emit('message', {user: 'admin', text: `${user.name}, has join`});
+            cb();
+
         })
 
-        socket.on('sendMessage', (message, cd) => {
+        //Listening for changes/messages
+        socket.on('sendMessage', (message, cb) => {
             const user = getUser(socket.id)
 
             io.to(user.room).emit('message', { user: user.name, text: message })
@@ -38,6 +41,8 @@ const express = require('express'),
         });
     });
 
+
+    
     app.get('/', (req, res) => {
         res.send('send')
     });
