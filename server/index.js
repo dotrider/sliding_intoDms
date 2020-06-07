@@ -22,8 +22,15 @@ const express = require('express'),
             //broadcast sends message to everyone besides especific user that user has joinned
             socket.broadcast
             .to(user.room).emit('message', {user: 'admin', text: `${user.name}, has join`})
+            cb()
         })
 
+        socket.on('sendMessage', (message, cd) => {
+            const user = getUser(socket.id)
+
+            io.to(user.room).emit('message', { user: user.name, text: message })
+            cb()
+        })
 
         ////DISCONNECT
         socket.on('disconnect', () => {

@@ -8,7 +8,9 @@ let socket;
 const Messages = (props) => {
 
     const [name, setName] = useState(''),
-    [room, setRoom] = useState('');
+    [room, setRoom] = useState(''),
+    [messages, setMessages] = useState([]),
+    [message, setMessage] = useState('');
     // console.log('messages', props.location.search)
     
     useEffect(() => {
@@ -28,6 +30,14 @@ const Messages = (props) => {
             socket.off()
         };
     },['localhost:4040', props.location.search]);
+
+
+    //Messages
+    useEffect(() => {
+        socket.on('message', (message) => {
+            setMessage([...messages, message])
+        })
+    },[messages])
 
     return(
         <div>
