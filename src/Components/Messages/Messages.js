@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 import Header from '../Header/Header';
 import Chat from '../Chat/Chat'
+import Conversation from '../Conversation/Conversation';
 
 //Setting up sockets
 let socket;
@@ -55,11 +56,12 @@ const Messages = (props) => {
     }
 
     console.log('message',message, 'messages', messages)
-
+ 
     return(
         <div>
             <Header room={room}/>
             <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>   
+            <Conversation messages={messages} name={name}/>
         </div>
     )
 }
