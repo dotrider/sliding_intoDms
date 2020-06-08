@@ -36,7 +36,7 @@ const Messages = (props) => {
 
     //Handling Messages
     useEffect(() => {
-        //listening for changes/messages
+        //.on listening/receiving changes/messages from b/e
         socket.on('message', (message) => {
             setMessages([...messages, message])
         })
@@ -46,18 +46,19 @@ const Messages = (props) => {
     const sendMessage = (e) => {
         e.preventDefault();
         if(message){
+            //sends/emits message to server
             socket.emit('sendMessage', message, () => {
                 setMessage('')
             })}
     }
 
-    console.log('messages', messages)
+    console.log('message',message, 'messages', messages)
 
     return(
         <div>
             <div>
                 <input value={message} onChange={e => setMessage(e.target.value)}
-                onKeyPress={event => event.key === 'Enter'? setMessage(event): null}
+                onKeyPress={e => e.key === 'Enter'? sendMessage(e): null}
                 />
                 
             </div>

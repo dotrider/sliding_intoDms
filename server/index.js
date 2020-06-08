@@ -16,7 +16,7 @@ const express = require('express'),
             console.log(name,room)
             const { err, user } = addUser({ id: socket.id, name, room});
             if(err) return cb(err)
-      
+            //joins user in room
             socket.join(user.room);
             //Welcomes user with message - {'message'} sending payload with user/text to client handling-messages useEffect
             socket.emit('message', {user: 'admin', text: `Hello ${user.name}, welcome to room ${user.room}`});
@@ -27,10 +27,12 @@ const express = require('express'),
 
         })
 
-        //Listening for changes/messages
+        //Listening/receiving changes/messages from client
+        //.on receives 2params, event & cb
         socket.on('sendMessage', (message, cb) => {
+            //getting socket.id from 'io.on('connection', (socket)'
             const user = getUser(socket.id)
-
+            //io.to looks for user.room and sends/emit message to client
             io.to(user.room).emit('message', { user: user.name, text: message })
             cb()
         })
@@ -42,7 +44,7 @@ const express = require('express'),
     });
 
 
-    
+
     app.get('/', (req, res) => {
         res.send('send')
     });
