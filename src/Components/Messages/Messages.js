@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import io from 'socket.io-client';
+import Header from '../Header/Header';
+import Chat from '../Chat/Chat'
 
 //Setting up sockets
 let socket;
@@ -56,12 +58,8 @@ const Messages = (props) => {
 
     return(
         <div>
-            <div>
-                <input value={message} onChange={e => setMessage(e.target.value)}
-                onKeyPress={e => e.key === 'Enter'? sendMessage(e): null}
-                />
-                
-            </div>
+            <Header room={room}/>
+            <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>   
         </div>
     )
 }
