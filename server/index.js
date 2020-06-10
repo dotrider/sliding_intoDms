@@ -13,7 +13,7 @@ const express = require('express'),
         /*(receiving data using same event='join' payload={name,room} from client)
         passing cb to error handling*/
         socket.on('join', ({name, room}, cb ) => {
-            console.log(name,room)
+            console.log('name & room', name, room)
             const { err, user } = addUser({ id: socket.id, name, room});
             if(err) return cb(err)
             //joins user in room
@@ -40,12 +40,16 @@ const express = require('express'),
         ////DISCONNECT
         socket.on('disconnect', () => {
             console.log('connection disconnected');
+            const user = removeUser(socket.id);
+            if(user){
+                io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.`})
+            }
         });
     });
 
 
 
-    app.get('/', (req, res) => {
+    app.get('/', (req, res) => { 
         res.send('send')
     });
 

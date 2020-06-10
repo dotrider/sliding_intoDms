@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import Header from '../Header/Header';
 import Chat from '../Chat/Chat'
 import Conversation from '../Conversation/Conversation';
+import style from './Messages.module.css'
 
 //Setting up sockets
 let socket;
@@ -20,7 +21,7 @@ const Messages = (props) => {
         const {name, room} = queryString.parse(props.location.search);
         // console.log('useEffect', name, room)
         /*-------*/
-        socket = io('localhost:4040');
+        socket = io('http://192.168.1.5:4040');
         /*-------*/
         setName(name);
         setRoom(room);
@@ -34,7 +35,7 @@ const Messages = (props) => {
             socket.emit('disconnect');
             socket.off()
         };
-    },['localhost:4040', props.location.search]);
+    },['http://192.168.1.5:4040', props.location.search]);
 
 
     //Handling Messages
@@ -58,10 +59,10 @@ const Messages = (props) => {
     console.log('message',message, 'messages', messages)
  
     return(
-        <div>
+        <div className={style.container}>
             <Header room={room}/>
-            <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>   
             <Conversation messages={messages} name={name}/>
+            <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>   
         </div>
     )
 }

@@ -12,14 +12,14 @@ const Message = ({message, name}) => {
     }
 
     return(
-       <div style={{width: '30vw', margin: '0 auto'}}>
+       <div style={{width: '50vw', margin: '0 auto', padding: '10px'}}>
            {isSentByCurrentUser?
-            <div style={{textAlign: 'right', backgroundColor: '#047BF4', padding: '10px'}}>
+            <div style={{textAlign: 'right', backgroundColor: '#047BF4', padding: '10px', borderRadius: '10px'}}>
                  <p style={{color: '#F9F9F9'}}>{trimmedName}</p>
                  <p>{message.text}</p>
             </div>
             :
-            <div style={{textAlign: 'left', backgroundColor: '#F9F9F9', padding: '10px'}}>
+            <div style={{textAlign: 'left', backgroundColor: '#F9F9F9', padding: '10px', borderRadius: '10px'}}>
                 <p style={{color: '#047BF4'}}>{message.user}</p>
                 <p>{message.text}</p>
             </div>}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import style from './Join.module.css';
 
 const Join = (props) => {
 
@@ -9,16 +9,16 @@ const Join = (props) => {
     // console.log(props)
 
     return(
-        <div>
-            <h1>Join</h1>
             <div>
+                <h1>Join</h1>
+                <div>
                 <input placeholder='Enter Name' type='text' onChange={(e) => setName(e.target.value)}/>
-            </div>
-            <div>
+                </div>
+                <div>
                 <input placeholder='Enter Room' type='text' onChange={(e) => setRoom(e.target.value)}/>
+                </div>
+                <button onClick={ e => (!name || !room)? e.preventDefault() : props.history.push(`/messages?name=${name}&room=${room}`)}>Sign in</button>
             </div>
-            <button onClick={ e => (!name || !room)? e.preventDefault() : props.history.push(`/messages?name=${name}&room=${room}`)}>Sign in</button>
-        </div>
     )
 }
 
