@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import Header from '../Header/Header';
 import Chat from '../Chat/Chat'
 import Conversation from '../Conversation/Conversation';
+import UsersContainer from '../UsersContainer/UsersContainer';
 import style from './Messages.module.css'
 
 //Setting up sockets
@@ -14,7 +15,8 @@ const Messages = (props) => {
     const [name, setName] = useState(''),
     [room, setRoom] = useState(''),
     [messages, setMessages] = useState([]),
-    [message, setMessage] = useState('');
+    [message, setMessage] = useState(''),
+    [usersOnline, setUsersOnline] = useState([]);
     // console.log('messages', props.location.search)
     //Handling users join
     useEffect(() => {
@@ -43,8 +45,12 @@ const Messages = (props) => {
         //.on listening/receiving changes/messages from b/e
         socket.on('message', (message) => {
             setMessages([...messages, message])
+        });
+
+        socket.on('roomData', (users) => {
+            setUsersOnline(users.users)
         })
-    },[messages]);
+    },[messages, usersOnline]);
 
 
     const sendMessage = (e) => {
@@ -57,12 +63,16 @@ const Messages = (props) => {
     }
 
     console.log('message',message, 'messages', messages)
+    console.log('usersOnline', usersOnline)
  
     return(
-        <div className={style.container}>
-            <Header room={room}/>
-            <Conversation messages={messages} name={name}/>
-            <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>   
+        <div>
+            <div className={style.container}>
+                <Header room={room}/>
+                <Conversation messages={messages} name={name}/>
+                <Chat message={message} setMessage={setMessage} sendMessage={sendMessage}/>
+            </div>
+                <UsersContainer usersOnline={usersOnline}/>
         </div>
     )
 }

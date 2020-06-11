@@ -23,6 +23,9 @@ const express = require('express'),
             //broadcast sends message to everyone besides especific user that user has joinned
             socket.broadcast
             .to(user.room).emit('message', {user: 'admin', text: `${user.name}, has join`});
+
+            //sends all users in the room
+            io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)})
             cb();
 
         })
@@ -34,12 +37,15 @@ const express = require('express'),
             const user = getUser(socket.id)
             //io.to looks for user.room and sends/emit message to client
             io.to(user.room).emit('message', { user: user.name, text: message })
+            //Send all users in room when user leaves
+            io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)})
             cb()
         })
 
         ////DISCONNECT
         socket.on('disconnect', () => {
             console.log('connection disconnected');
+            //Sends message to room that user has left
             const user = removeUser(socket.id);
             if(user){
                 io.to(user.room).emit('message', { user: 'admin', text: `${user.name} has left.`})
